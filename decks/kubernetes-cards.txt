@@ -1,0 +1,105 @@
+#separator:tab
+#html:true
+If a Pod encounters a problem it ... and a ... starts to replace it.	"<ol class=""markdown-tight""><li>terminates</li><li>new instance</li></ol>This strategy promotes:<ul class=""markdown-tight""><li>flexibility</li><li>resilience</li><li>immutability</li></ul>"
+<div>How to get a list of your running pods?</div>	"<code>$&amp;nbsp;&lt;span style=""white-space: pre-wrap;""&gt;kubectl get pods</code>"
+How do you print the logs of a pod?<br>(what the container is printing to stdout)	<pre><code>`$ kubectl logs PODNAME`</code></pre>
+What is the cmd to kill a pod?	"<div>`$&nbsp;<span style=""white-space: pre-wrap;"">kubectl delete pod PODNAME`</span></div><div><span style=""white-space: pre-wrap;""><br></span></div>"
+How to get a list of the running pods?	"<code>$&amp;nbsp;&lt;span style=""white-space: pre-wrap;""&gt;kubectl get pods&lt;/span&gt;</code>"
+In `kubectl get pods`, how can you add more info, like the IP, when you list the pods?&nbsp;	"<pre><code>Using the option `-o wide`:</code></pre>
+<pre><code>`$ kubectl get pods -o wide`
+</code></pre>"
+How to list all the contexts:	<code>$ kubectl config get-contexts</code>
+How to show the current context in your k8s configuration?	<code>kubectl config current-context</code>
+How to switch to a diffent context?	<code>kubectl config use-context CONTEXT-NAME</code>
+What is a context in k8s?	"<div>A context in Kubernetes is a named grouping of parameters that define:</div>
+<ul><li><strong>Cluster</strong>: The API server to interact with.</li><li><strong>User</strong>: The credentials to authenticate.</li><li><strong>Namespace</strong>: The default namespace for commands.</li></ul>
+<div>
+</div>"
+What's the most common way to manage env vars in k8s?	ConfigMaps
+What's the purpose of ConfigMap?	"ConfigMaps allow us to decouple our configurations from our container 
+images,<br>so that we don't need to rebuild our 
+images every time we change a configuration value."
+Are ConfigMaps secure?	"No, ConfigMaps aren't encrypted, and they can be accessed by anyone with access to the cluster.
+They are good to store things like these:
+<ul><li>Ports</li><li>URLs of other services</li><li>Feature flags</li></ul>"
+What are the four types of services in k8s?	"They are:
+<ul><li>ClusterIP</li><li>NodePort</li><li>LoadBalancer</li><li>ExternalName</li></ul>
+<div>
+</div>"
+What is the default service type?	ClusterIP
+The ... Service exposes the Service within the cluster. It can only be accessed internally.	ClusterIP
+The service type ... exposes the Service on a static port on each node's IP address, making it accessible externally.	NodePort
+The service type ... provisions an external load balancer (if supported by the cloud provider) and exposes the Service externally.	LoadBalancer
+The [...] maps the Service to an external DNS name, without proxying traffic to the cluster.	ExternalName
+When should you use a ClusterIP in k8s?	When you want to expose a service only within the cluster, without making it accessible from outside the cluster.
+A ClusterIP (for example) service connects with <strong>multiple Pods</strong> that match the same ... .	Selector
+How does an Ingress route traffic to different services?	"An Ingress uses rules to route traffic based on:<ul><li>Hostnames (e.g., <code>app.example.com</code>).</li><li>URL paths (e.g., <code>/api</code>, <code>/web</code>).</li></ul><div>
+</div>"
+Where are the Ingress rules defined?	The Ingress rules are defined in the `<code>spec/rules`</code> section of the Ingress YAML resources.<br>
+Why does Ingress resource have:&nbsp; apiVersion: networking.k8s.io/v1<br>instead of: `apiVersion: v1` ?	Ingress isn't a core k8s resource, it's an <b>extension</b> of sorts.<br>That's why it has: <code>apiVersion: networking.k8s.io/v1</code>
+In K8s, will saving data to a containers's filesystem persist the data between pod recreations?	"No, in K8s even the filesystems are ephemeral. That means that when a pod is deleted, the filesystem is deleted with it.<div>
+</div>"
+What does PVC stand for?	PersistentVolumeClaim: it allows users to request and use a PV, which is a persistent storage.
+What is the purpose of a volume in Kubernetes?	A volume provides storage that containers in a pod can access and share, and persisting data beyond a container's lifecycle.
+What are the main two types of volumes in Kubernetes?	"<ul class=""markdown-loose""><li>Ephemeral volumes: they have a lifetime of a pod</li><li>Persistent volumes: they exist beyond the lifetime of a pod</li></ul>"
+What are examples of ephemeral volumes?	"<ul class=""markdown-tight""><li>emptyDir: empty at Pod startup, with storage coming locally from the kubelet base directory</li><li>configMap, secret, downwardAPI: inject different kinds of Kubernetes data into a Pod</li></ul>"
+What is a PersistentVolume (PV) in Kubernetes?	A PV is a storage resource provisioned in a cluster, independent of any specific pod, used for long-term data storage.
+How does a pod request persistent storage?	By using a PersistentVolumeClaim (PVC), which binds to a PersistentVolume (PV).
+A&nbsp;... volume mounts a file or directory from the host node's filesystem into your Pod.	<code>hostPath</code>
+What is the difference between <code>configMap</code> and <code>secret</code> volumes?	"<ul class=""markdown-tight""><li><code>configMap</code> provides non-sensitive configuration data</li><li><code>secret</code> stores sensitive information like passwords or API keys.</li></ul>"
+What is the purpose of CSI volumes in Kubernetes?	CSI (Container Storage Interface) allows Kubernetes to integrate with third-party storage systems using a standardized interface.<br>
+What is an <code>emptyDir</code> volume, and when is it deleted?	An <code>emptyDir</code> volume provides temporary storage and is deleted when the pod is deleted.
+What is the difference between <code>local</code> and <code>nfs</code> volumes?	"<ul class=""markdown-tight""><li><code>local</code> provides storage tied to a specific node</li><li><code>nfs</code> allows sharing storage across nodes via a network file system</li></ul>"
+Namespaces are a way to isolate ... into groups.<br>Namespaces allow us to use the same ... for different resources, as long as they're in different ... .	"<ol class=""markdown-tight""><li>cluster resources</li><li>name</li><li>namespaces</li></ol>"
+What is the kubectl flag to specify the namespace?	You can specify the namespace with the `--namespace` or `-n` flag.
+What does happen when you don't specify a namespace in kubectl?	If you don't, it will use the `default` namespace.
+How to show the resources in all namespaces?	Use <code>--all-namespaces</code> option when linking the resources, for example:<br><br><code>kubectl get pods --all-namespaces</code>
+The ... namespace is reserved for Kubernetes system components, such as the API server, scheduler, controller manager, and add-ons like CoreDNS and kube-proxy.<br>	kube-system
+When are namespaces useful?	"Namespaces are useful for organizing resources in a large cluster, with multiple teams and projects.
+"
+The unique identifier of a resource in Kubernetes is the combination of its ... and its ...	"<ol class=""markdown-tight""><li>name</li><li>namespace</li></ol>"
+In Kubernetes, the fully qualified domain name (FQDN) &nbsp;is used for DNS-based service discovery within the cluster.<br><br>What is it the FQDN format?	<code>service-name.namespace.svc.cluster.local</code><br><br>In many case you can omit `svc.cluster.local`
+What is the command to know about the resources that pods are using?	kubectl top pods
+Adding more nodes to a cluster is an example of ... scaling	horizontal
+Buying larger nodes for your k8s cluster is an example of ... scaling	vertical
+Limit the memory of the container to 512 megabytes,<br>and CPU to&nbsp;500 milli-cores.	"<pre><code>spec:
+  containers:
+  - name: my-container
+    image: my-image
+    resources:
+      limits:
+        memory: 512m
+        cpu: 500m
+</code></pre>"
+The ... allows to automatically scale the number of Pods in a Deployment based on ... utilization or other custom metrics.	"<ol class=""markdown-tight""><li><code>HorizontalPodAutoscaler</code></li><li>CPU</li></ol>"
+What are the managed Kubernetes services, offered by the big 3 cloud providers.	"<ul class=""markdown-tight""><li>GKE: Google Kubernetes Engine</li><li>EKS: Elastic Kubernetes Service (Amazon)</li><li>AKS: Azure Kubernetes Service</li></ul>"
+<div>What are the two main types of machines in a production Kubernetes cluster?</div>	"<ul class=""markdown-tight""><li>Control Plane: they are responsible for managing the cluster</li><li>Worker Nodes: the machines that runs the containers</li></ul>"
+Which nodes are typically handled by the cloud provider in a managed Kubernetes cluster?	Control Plane
+A resource ... is the amount of a resource that a pod <i>requests</i> from the node it's running on.<br><br>On the other hand, a resource ...&nbsp; is the <i>maximum</i> amount of a resource that a pod is allowed to consume before it's throttled or killed.	"<ol class=""markdown-tight""><li>request</li><li>limit</li></ol>"
+"<pre><code>What is Kubernetes?
+</code></pre>"	K8s is an Open Source <b>container orchestrator</b> for deploying containerized applications.
+K8s functionalities 1/4:<br><br>Container orchestrators are responsible for deploying and managing services that span ... ... .	multiple containers
+K8s optimizes resource usage by scheduling containers across a ... .	cluster
+"<span style=""background-color: rgb(255, 255, 255);"">K8s functionalities 2/4:</span><br><br>K8s handle ... containers up or down based on workload demands."	scaling
+K8s functionalities 3/4:<br><br>To ensure reliability, K8s monitor and maintain the health of containers and pods.<br><br>In order to do that, it restarts ... and replaces ... that are not properly running.	"<ol class=""markdown-tight""><li>Containers</li><li>Pods</li></ol>"
+What are the two main parts of a Kubernetes cluster?	"<ol class=""markdown-tight""><li>The <b>control plane</b> (previously called master). It manages the worker nodes and the Pods (hosted inside the nodes).</li><li>A set of machines called <b>worker nodes</b>. They run containerized applications.</li></ol>"
+<div><div>How can you interact with the Kubernetes Cluster? (3)</div></div>	"There are three ways:<ol class=""markdown-tight""><li>by the command line client `kubectl`</li><li>by direct access to the REST API with an HTTP client</li><li>by programmatic access to the API (Golang, Python, Java, ...)</li></ol>"
+What is <i>kubectl</i>?	It is the command-line interface, which allows you to query or tweak the cluster. It talks with the cluster via API calls to <i>kube-apiserver</i>.<br><br>To update the cluster, you should create the manifest files and apply them with the command: <code>kubectl apply -f my_manifest.yaml</code>
+<div><div>What is a manifest file?</div></div>	A manifest file is a YAML file containing the description of the objects passed in the K8s API.<br>K8s relies on declarative configuration, and the manifest files describe the <b>desired state</b>.
+<div><div>Can you create a Pod object without using a manifest file?</div></div>	"Yes, you can create a Pod, or other objects, via the imperative kubectl run command, but that's not a good practice.
+The preferred way is to use a manifest file since you can treat it as source code."
+What is an <i>object</i> in Kubernetes?	A Kubernetes object is a <i>record of intent</i>. Once you create the object, the K8s controllers will constantly monitor it to ensure its requirements are met.<br><br>Some examples of objects are Pods, ReplicaSet and Deployments.
+Can you run a Kubernetes cluster on your laptop?	Yes, by using a platform called <b>Minikube</b>.
+What is Minikube?	Minikube is a lightweight Kubernetes implementation that creates a virtual machine on your laptop and deploys a simple cluster.<br><br>Minikube has a limitation: its cluster has only one node.
+In which platform can you deploy a <i>K8s cluster</i>?	"<ul class=""markdown-tight""><li>on many cloud platforms</li><li>on bare metal servers</li><li>on your local machine by using <i>Minikube</i></li></ul>"
+What is a <i>Pod</i>?	"<ul class=""markdown-tight""><li>A Pod is a set of containers running in the same execution environment.</li><li>As a best practice, a Pod should only have (run) a container.</li><li>A Pod is the smallest unit of a Kubernetes application.</li></ul>"
+Which resources do application containers share within a single Pod?	"<ul class=""markdown-tight""><li>IP address</li><li>port space (network namespace)</li><li>hostname</li><li>interprocess communication channels</li></ul>"
+Does the Pods persist data in the filesystem?	No, Pods are stateless. When you restart a Pod, all data in the container's filesystem is deleted.
+"The K8s abstraction is not infrastructure-oriented but <span class=""cloze"" data-cloze=""application&#x2D;oriented"" data-ordinal=""1"">[...]</span> based. That is why transferring your application between clusters should be simple. There are many K8s plug-ins that support the cloud platforms (AWS, GCP, Azure, …)."	"The K8s abstraction is not infrastructure-oriented but <span class=""cloze"" data-ordinal=""1"">application-oriented</span> based. That is why transferring your application between clusters should be simple. There are many K8s plug-ins that support the cloud platforms (AWS, GCP, Azure, …).<br>
+"
+"<span class=""cloze"" data-cloze=""Google"" data-ordinal=""1"">[...]</span> created K8s in 2014 and later donated it to the <span class=""cloze"" data-cloze=""Cloud&#x20;Native&#x20;Computing&#x20;Foundation&#x20;&#x28;CNCF&#x29;"" data-ordinal=""1"">[...]</span>."	"<span class=""cloze"" data-ordinal=""1"">Google</span> created K8s in 2014 and later donated it to the <span class=""cloze"" data-ordinal=""1"">Cloud Native Computing Foundation (CNCF)</span>.<br>
+"
+"What are the main parts of the&nbsp;control plane?<br><br><span class=""cloze"" data-cloze=""kube&#x2D;apiserver"" data-ordinal=""1"">[...]</span>: it allows you to communicate with the cluster. It exposes a restful HTTP interface. Every time you query the cluster with kubectl, underneath, you are making an API call to the kube-apiserver.<br><br><span class=""cloze"" data-cloze=""etcd"" data-ordinal=""1"">[...]</span>: it is a key-value store, contains the records of intent, and is the only stateful component in the control plane.<br><br><span class=""cloze"" data-cloze=""scheduler"" data-ordinal=""1"">[...]</span>: its job is to find the best nodes to run the workloads.<br><br><span class=""cloze"" data-cloze=""background&#x20;control&#x20;loops"" data-ordinal=""1"">[...]</span>: it continuously checks that the status of the cluster is the same as the one stated in the records of intent."	"What are the main parts of the&nbsp;control plane?<br><br><span class=""cloze"" data-ordinal=""1"">kube-apiserver</span>: it allows you to communicate with the cluster. It exposes a restful HTTP interface. Every time you query the cluster with kubectl, underneath, you are making an API call to the kube-apiserver.<br><br><span class=""cloze"" data-ordinal=""1"">etcd</span>: it is a key-value store, contains the records of intent, and is the only stateful component in the control plane.<br><br><span class=""cloze"" data-ordinal=""1"">scheduler</span>: its job is to find the best nodes to run the workloads.<br><br><span class=""cloze"" data-ordinal=""1"">background control loops</span>: it continuously checks that the status of the cluster is the same as the one stated in the records of intent.<br>
+"
+"In k8s, the main features of the Ingress resource are:<br><ol><li>Routing based on <span class=""cloze"" data-cloze=""URL&#x20;paths&#x20;or&#x20;hostnames"" data-ordinal=""1"">[...]</span>.</li><li><span class=""cloze"" data-cloze=""Load&#x20;balancing"" data-ordinal=""1"">[...]</span> for backend services.</li><li><span class=""cloze"" data-cloze=""TLS&#x20;&#x28;SSL&#x29;&#x20;termination"" data-ordinal=""1"">[...]</span> for HTTPS traffic.</li><li><span class=""cloze"" data-cloze=""Centralized&#x20;traffic"" data-ordinal=""1"">[...]</span> management.</li></ol>"	"In k8s, the main features of the Ingress resource are:<br><ol><li>Routing based on <span class=""cloze"" data-ordinal=""1"">URL paths or hostnames</span>.</li><li><span class=""cloze"" data-ordinal=""1"">Load balancing</span> for backend services.</li><li><span class=""cloze"" data-ordinal=""1"">TLS (SSL) termination</span> for HTTPS traffic.</li><li><span class=""cloze"" data-ordinal=""1"">Centralized traffic</span> management.</li></ol><br>
+"
